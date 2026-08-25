@@ -78,7 +78,8 @@ The selection procedure is:
 2. Select the first item with the largest R² values across the five target scales.
 3. Identify the target scale with the lowest R².
 4. From the remaining items, select the item that produces the largest improvement in R² for that weakest target.
-5. Repeat the procedure until 16 items have been selected. The first 14 items form the short questionnaire evaluated in `validation.py`.
+5. Repeat Steps 3–4 until the minimum cross-validated R² across the five target scales reaches or exceeds the predefined threshold of 0.85. (This criterion was first satisfied after 14 items had been selected, defining the final short form)
+* The script continues the selection procedure to 16 items for diagnostic examination of the performance trajectory. Items 15 and 16 are not included in the final short form evaluated in `validation.py`.
 
 The same shuffled five-fold partitions are reused for all candidate item sets, with `random_state=42`. A separate CatBoost model is fitted for each of the five target scales.
 
