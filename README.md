@@ -9,7 +9,12 @@ This repository contains the dataset and Jupyter notebooks used to select and va
 ├── README.md
 ├── A_SPEQT.xlsx
 ├── item_selection.ipynb
-└── validation.ipynb
+├── validation.ipynb
+├── SPRIS-6 Korean and English.pdf
+├── SPAIS-6 Korean and English.pdf
+├── SMYTH Korean and English.pdf
+├── SMORE Korean and English.pdf
+└── SATIS Korean and English.pdf
 ```
 
 The notebooks create additional cache, figure, and result files when run.
@@ -37,6 +42,41 @@ The workbook contains questionnaire responses from 500 adults with insomnia who 
 | SATIS | `SATIS_1`–`SATIS_12`, `SATIS_13_Global_item`, `SATIS_14`, and `SATIS_15` | 15 | `SATIS_av` | Mean of the 14 non-global items: `SATIS_1`–`SATIS_12`, `SATIS_14`, and `SATIS_15` |
 
 `SATIS_13_Global_item` is included as a candidate predictor during item selection but is not included when calculating `SATIS_av`.
+
+## Survey instruments
+
+The repository includes the complete Korean and English versions of the five A-SPEQTs instruments. Each instrument is provided as a one-page PDF containing the administration instructions, full item wording in both languages, and the response scale.
+
+For every item, respondents indicate their level of agreement using an integer from 0 to 10:
+
+- `0` = strongly disagree
+- `10` = strongly agree
+
+### Instrument files and dataset variables
+
+| Instrument file | Construct assessed | Instrument content | Corresponding candidate variables |
+|---|---|---:|---|
+| `SPRIS-6 Korean and English.pdf` | Psychological receptivity to and perceived involuntariness of sleep and hypnotic use | 6 items | `SPRIS_1`–`SPRIS_6` |
+| `SPAIS-6 Korean and English.pdf` | Ambivalence and indecisiveness regarding sleeping-pill use | 6 items | `SPAIS_1`–`SPAIS_6` |
+| `SMYTH Korean and English.pdf` | Misconceptions about sleep medications | 10 items | `SMYTH_1`–`SMYTH_10` |
+| `SMORE Korean and English.pdf` | Excessive expectations about responses to sleep medications | 10 items | `SMORE_1`–`SMORE_10` |
+| `SATIS Korean and English.pdf` | Perceived treatment impact and satisfaction after taking sleep medication | 14 content items plus 1 global item | `SATIS_1`–`SATIS_12`, `SATIS_13_Global_item`, `SATIS_14`, and `SATIS_15` |
+
+The five PDFs collectively document all 47 candidate questionnaire items used by `item_selection.ipynb`.
+
+### Scoring correspondence
+
+- `SPRIS_av`, `SPAIS_av`, `SMYTH_av`, and `SMORE_av` are the arithmetic means of all items in their respective instruments.
+- The SATIS PDF contains 14 content items and a separate global satisfaction item. In the dataset, the global item is stored as `SATIS_13_Global_item`; the 14 content items are stored as `SATIS_1`–`SATIS_12`, `SATIS_14`, and `SATIS_15`.
+- `SATIS_av` is the arithmetic mean of the 14 content items and excludes `SATIS_13_Global_item`.
+- The notebooks use the supplied item and mean-score values directly and do not apply reverse scoring, standardization, normalization, or missing-value imputation.
+
+### References provided with the instruments
+
+- SPRIS-6: Chung S, Shahrier MA. *Development of the Sleeping Pills Receptivity and Involuntariness Scale-6 (SPRIS-6) to Assess Acceptance of Hypnotics Use.* **Nature and Science of Sleep.** 2025;17:2309–2319.
+- SPAIS-6: Chung S. *Development of the Sleeping Pills Ambivalence and Indecisiveness Scale-6 Among the General Population.* **Sleep Medicine Research.** 2026;17:129–138.
+- SMYTH and SMORE: Chung S, Jeon S. *Development of Sleep Medications MYTH-understanding (SMYTH) and Sleep Medications Overexpectation of Responses (SMORE) among the general population.* **Sleep and Breathing.** 2026;30:153.
+- SATIS: Chung S. *Development of the Sleep Aids Treatment Impact and Satisfaction (SATIS) Scale among the general population.* **Psychiatry Investigation.** 2026; accepted, as stated in the supplied instrument PDF.
 
 ## Final 14 selected items
 
@@ -74,7 +114,7 @@ The selection procedure is:
 5. Select the candidate that produces the largest improvement in R² for the current weakest-performing target.
 6. Repeat Steps 3–5 to obtain the complete selection trajectory.
 
- A separate CatBoost model is fitted for each of the five target scales. The notebook memoizes previously evaluated feature sets to avoid unnecessary refitting.
+A separate CatBoost model is fitted for each of the five target scales. The notebook memoizes previously evaluated feature sets to avoid unnecessary refitting.
 
 The supplied implementation runs the selection sequence in three stages: `k=1`, `k=2–9`, and `k=10–16`. The first 14 selected items define the short form evaluated in `validation.ipynb`; items 15 and 16 are retained only in the displayed selection trajectory. The notebook uses a fixed `K_total=16` and does not implement an automatic R²-based stopping rule.
 
