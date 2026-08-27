@@ -21,12 +21,10 @@ The notebooks create additional cache, figure, and result files when run.
 The workbook contains questionnaire responses from 500 adults with insomnia who were taking sleep medication.
 
 - Each row represents one participant.
-- The workbook contains one worksheet, `Sheet1`.
 - The dataset contains 500 rows and 154 variables.
 - The modeling analyses use 47 A-SPEQTs questionnaire items as candidate predictors and five full-scale mean scores as target variables.
 - All 47 candidate items are integer coded from 0 to 10.
 - The 47 candidate items and five target scores contain no missing values in the supplied dataset. Other variables in the workbook may contain missing values but are not used by these notebooks.
-- The notebooks do not perform missing-value imputation, standardization, normalization, or other predictor transformations.
 
 ### Candidate questionnaire items and target scores
 
@@ -70,13 +68,13 @@ This notebook performs greedy questionnaire-item selection using CatBoost regres
 The selection procedure is:
 
 1. Evaluate each of the 47 candidate items individually.
-2. Select the first item that maximizes the sum of the five target-specific OOF R² values.
-3. Using the currently selected items, identify the target scale with the lowest OOF R².
+2. Select the first item that maximizes the sum of the target-specific R² values.
+3. Using the currently selected items, identify the target scale with the lowest R².
 4. Evaluate each remaining candidate after adding it to the selected set.
-5. Select the candidate that produces the largest improvement in OOF R² for the current weakest-performing target.
+5. Select the candidate that produces the largest improvement in R² for the current weakest-performing target.
 6. Repeat Steps 3–5 to obtain the complete selection trajectory.
 
-The same shuffled five-fold partitions are reused for every candidate feature set (`random_state=42`). A separate CatBoost model is fitted for each of the five target scales. The notebook memoizes previously evaluated feature sets to avoid unnecessary refitting.
+ A separate CatBoost model is fitted for each of the five target scales. The notebook memoizes previously evaluated feature sets to avoid unnecessary refitting.
 
 The supplied implementation runs the selection sequence in three stages: `k=1`, `k=2–9`, and `k=10–16`. The first 14 selected items define the short form evaluated in `validation.ipynb`; items 15 and 16 are retained only in the displayed selection trajectory. The notebook uses a fixed `K_total=16` and does not implement an automatic R²-based stopping rule.
 
@@ -102,7 +100,7 @@ This notebook evaluates the final 14-item short form using five separate CatBoos
 
 #### Primary validation analysis
 
-- The 500 participants are divided into a 70% training set and a 30% test set using `random_state=42`, producing 350 training observations and 150 test observations.
+- The 500 participants are divided into a 70% training set and a 30% test set, producing 350 training observations and 150 test observations.
 - Five-fold cross-validation is conducted within the training set to calculate the mean validation-fold R² for each target.
 - A final model for each target is fitted using all 350 training observations.
 - Final performance is evaluated on the 150 held-out test observations using R², mean squared error (MSE), and root mean squared error (RMSE).
