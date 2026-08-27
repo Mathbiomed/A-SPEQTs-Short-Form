@@ -69,7 +69,6 @@ The five PDFs collectively document all 47 candidate questionnaire items used by
 - `SPRIS_av`, `SPAIS_av`, `SMYTH_av`, and `SMORE_av` are the arithmetic means of all items in their respective instruments.
 - The SATIS PDF contains 14 content items and a separate global satisfaction item. In the dataset, the global item is stored as `SATIS_13_Global_item`; the 14 content items are stored as `SATIS_1`–`SATIS_12`, `SATIS_14`, and `SATIS_15`.
 - `SATIS_av` is the arithmetic mean of the 14 content items and excludes `SATIS_13_Global_item`.
-- The notebooks use the supplied item and mean-score values directly and do not apply reverse scoring, standardization, normalization, or missing-value imputation.
 
 ### References provided with the instruments
 
